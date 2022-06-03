@@ -48,9 +48,9 @@ type interfacetype struct {
 
 这里通过一张图来看下 `iface` 结构体的全貌：
 
-![iface 结构体全景](../assets/0.png)
+![iface 结构体全景](./assets/0.png)
 
-![0](D:\work\src\go\Go-Questions\content\interface\assets\0.png)
+
 
 接着来看一下 `eface` 的源码：
 
@@ -63,9 +63,9 @@ type eface struct {
 
 相比 `iface`，`eface` 就比较简单了。只维护了一个 `_type` 字段，表示空接口所承载的具体的实体类型。`data` 描述了具体的值。
 
-![eface 结构体全景](../assets/1.png)
+![eface 结构体全景](./assets/1.png)
 
-![1](D:\work\src\go\Go-Questions\content\interface\assets\1.png)
+
 
 我们来看个例子：
 

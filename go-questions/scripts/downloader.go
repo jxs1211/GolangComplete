@@ -7,7 +7,7 @@
 //
 // This scripts tries to extract all image urls from github, download
 // and save them to the ./assets folder, and then replaces all links
-// from original github user content url to ../assets.
+// from original github user content url to ./assets.
 package main
 
 import (
