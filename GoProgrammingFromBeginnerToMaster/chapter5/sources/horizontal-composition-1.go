@@ -18,7 +18,7 @@ func showReader() {
 
 func showReader2() {
 	r := strings.NewReader("Hello, world")
-	lr := io.LimitReader(r, 5)
+	lr := io.LimitReader(r, 10)
 	if _, err := io.Copy(os.Stdout, lr); err != nil {
 		fmt.Println(err)
 	}
