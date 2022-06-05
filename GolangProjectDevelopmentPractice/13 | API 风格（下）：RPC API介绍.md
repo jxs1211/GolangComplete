@@ -56,7 +56,6 @@ gRPC API 接口通常使用的数据传输格式是 Protocol Buffers。接下来
 第一，可以用来定义数据结构。举个例子，下面的代码定义了一个 SecretInfo 数据结构：
 
 ```
-
 // SecretInfo contains secret details.
 message SecretInfo {
     string name = 1;
@@ -73,7 +72,6 @@ message SecretInfo {
 第二，可以用来定义服务接口。下面的代码定义了一个 Cache 服务，服务包含了 ListSecrets 和 ListPolicies 两个 API 接口。
 
 ```
-
 // Cache implements a cache rpc service.
 service Cache{
   rpc ListSecrets(ListSecretsRequest) returns (ListSecretsResponse) {}
@@ -99,7 +97,6 @@ service Cache{
 示例代码存放在gopractise-demo/apistyle/greeter目录下。代码结构如下：
 
 ```shell
-
 $ tree
 ├── client
 │   └── main.go
@@ -119,7 +116,6 @@ client 目录存放 Client 端的代码，helloworld 目录用来存放服务的
 首先，需要定义我们的服务。进入 helloworld 目录，新建文件 helloworld.proto：
 
 ```
-
 $ cd helloworld
 $ vi helloworld.proto
 ```
@@ -127,7 +123,6 @@ $ vi helloworld.proto
 内容如下：
 
 ```shell
-
 syntax = "proto3";
 
 option go_package = "github.com/marmotedu/gopractise-demo/apistyle/greeter/helloworld";
@@ -154,7 +149,6 @@ message HelloReply {
 在 helloworld.proto 定义文件中，option 关键字用来对.proto 文件进行一些设置，其中 go_package 是必需的设置，而且 go_package 的值必须是包导入的路径。package 关键字指定生成的.pb.go 文件所在的包名。我们通过 service 关键字定义服务，然后再指定该服务拥有的 RPC 方法，并定义方法的请求和返回的结构体类型：
 
 ```
-
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
@@ -174,7 +168,6 @@ gRPC 支持定义 4 种类型的服务方法，分别是简单模式、服务端
 本示例使用了简单模式。.proto 文件也包含了 Protocol Buffers 消息的定义，包括请求消息和返回消息。例如请求消息：
 
 ```
-
 // The request message containing the user's name.
 message HelloRequest {
   string name = 1;
@@ -185,8 +178,7 @@ message HelloRequest {
 
 接下来，我们需要根据.proto 服务定义生成 gRPC 客户端和服务器接口。我们可以使用 protoc 编译工具，并指定使用其 Go 语言插件来生成：
 
-```
-
+```sh
 $ protoc -I. --go_out=plugins=grpc:$GOPATH/src helloworld.proto
 $ ls
 helloworld.pb.go  helloworld.proto
@@ -198,8 +190,7 @@ helloworld.pb.go  helloworld.proto
 
 接着，我们就可以实现 gRPC 服务了。进入 server 目录，新建 main.go 文件：
 
-```
-
+```sh
 $ cd ../server
 $ vi main.go
 ```
@@ -207,7 +198,6 @@ $ vi main.go
 main.go 内容如下：
 
 ```go
-
 // Package main implements a server for Greeter service.
 package main
 
@@ -260,8 +250,7 @@ func main() {
 
 打开一个新的 Linux 终端，进入 client 目录，新建 main.go 文件：
 
-```
-
+```sh
 $ cd ../client
 $ vi main.go
 ```
@@ -269,7 +258,6 @@ $ vi main.go
 main.go 内容如下：
 
 ```go
-
 // Package main implements a client for Greeter service.
 package main
 
@@ -314,8 +302,7 @@ func main() {
 
 在上面的代码中，我们通过如下代码创建了一个 gRPC 连接，用来跟服务端进行通信：
 
-```
-
+```go
 // Set up a connection to the server.
 conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 if err != nil {
@@ -328,8 +315,7 @@ defer conn.Close()
 
 连接建立起来之后，我们需要创建一个客户端 stub，用来执行 RPC 请求c := pb.NewGreeterClient(conn)。创建完成之后，我们就可以像调用本地函数一样，调用远程的方法了。例如，下面一段代码通过 c.SayHello 这种本地式调用方式调用了远端的 SayHello 接口：
 
-```
-
+```go
 r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 if err != nil {
     log.Fatalf("could not greet: %v", err)
@@ -344,8 +330,7 @@ log.Printf("Greeting: %s", r.Message)
 
 最后，创建完 main.go 文件后，在当前目录下，执行 go run main.go 发起 RPC 调用：
 
-```
-
+```sh
 $ go run main.go
 2020/10/17 07:55:00 Greeting: Hello world
 ```
@@ -363,7 +348,6 @@ $ go run main.go
 新建 user.proto 文件，内容如下:
 
 ```go
-
 syntax = "proto3";
 
 package proto;
@@ -397,15 +381,13 @@ message GetUserResponse {
 
 在执行 protoc 命令时，需要传入--experimental_allow_proto3_optional参数以打开 optional 选项，编译命令如下：
 
-```
-
+```sh
 $ protoc --experimental_allow_proto3_optional --go_out=plugins=grpc:. user.proto
 ```
 
 上述编译命令会生成 user.pb.go 文件，其中的 GetUserRequest 结构体定义如下：
 
-```
-
+```go
 type GetUserRequest struct {
     state         protoimpl.MessageState
     sizeCache     protoimpl.SizeCache
@@ -423,8 +405,7 @@ type GetUserRequest struct {
 
 新建一个 user.go 文件，内容如下：
 
-```
-
+```go
 package user
 
 import (
