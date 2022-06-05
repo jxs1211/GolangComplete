@@ -39,7 +39,6 @@ Collection：一堆资源的集合。例如我们系统里有很多用户（User
 Member：单个特定资源。例如系统中特定名字的用户，就是 Collection 里的一个 Member。Member 的 URI 标识应该是 域名/资源名复数/资源名称, 例如https:// iam.api.marmotedu/users/admin。URI 结尾不应包含/。URI 中不能出现下划线 _，必须用中杠线 -代替（有些人推荐用 _，有些人推荐用 -，统一使用一种格式即可，我比较推荐用 -）。URI 路径用小写，不要用大写。避免层级过深的 URI。超过 2 层的资源嵌套会很乱，建议将其他资源转化为?参数，比如：
 
 ```
-
 /schools/tsinghua/classes/rooma/students/zhang # 不推荐
 /students?school=qinghua&class=rooma # 推荐
 ```
@@ -50,8 +49,7 @@ Member：单个特定资源。例如系统中特定名字的用户，就是 Coll
 
 - 将操作当作是一个资源的嵌套资源，比如一个 GitHub 的加星操作：
 
-- ```
-  
+```  
   PUT /gists/:id/star # github star action
   DELETE /gists/:id/star # github unstar action
   ```
@@ -136,8 +134,7 @@ REST 设计原则中，还有一些原则因为内容比较多，并且可以独
 
 上面介绍了一些概念和原则，这里我们通过一个“Hello World”程序，来教你用 Go 快速启动一个 RESTful API 服务，示例代码存放在gopractise-demo/apistyle/ping/main.go。
 
-```
-
+```go
 package main
 
 import (
@@ -162,8 +159,7 @@ func pong(w http.ResponseWriter, r *http.Request) {
 
 创建完 main.go 文件后，在当前目录下执行 go run main.go 启动 HTTP 服务，在一个新的 Linux 终端下发送 HTTP 请求，进行使用 curl 命令测试：
 
-```
-
+```sh
 $ curl http://127.0.0.1:50052/ping
 pong
 ```
@@ -186,6 +182,31 @@ pong
 
 思考一下，RESTful API 这种 API 风格是否能够满足你当前的项目需要，如果不满足，原因是什么？
 
+```go
+package main
+
+import (
+	"log"
+	"net/http"
+)
+
+func chapter12() {
+	http.HandleFunc("/ping", pong)
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("hello world\n"))
+	})
+	log.Println("Starting http server ...")
+	log.Fatal(http.ListenAndServe(":50052", nil))
+}
+
+func pong(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("pong\n"))
+}
+
+func main() {
+	chapter12()
+}
+```
 
 
 

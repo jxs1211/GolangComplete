@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"log"
+	"net/http"
 )
 
 type S struct {
@@ -11,15 +11,19 @@ type S struct {
 	c bool
 }
 
+func chapter12() {
+	http.HandleFunc("/ping", pong)
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("hello world\n"))
+	})
+	log.Println("Starting http server ...")
+	log.Fatal(http.ListenAndServe(":50052", nil))
+}
+
+func pong(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("pong\n"))
+}
+
 func main() {
-	// s := S{a: 1, b: "S", c: true}
-	// fmt.Printf("%+v\n, %-v\n", s, s)
-	// fmt.Printf("sasas")
-	for i, v := range os.Environ() {
-		fmt.Println(i, v)
-	}
-	// var err nil
-	// var perr *os.PathError
-	// errors.Is
-	// errors.As(err, perr)
+	chapter12()
 }
