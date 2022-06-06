@@ -4,7 +4,7 @@
 
 下面给你举个例子，你就会理解低质量的 Makefile 文件是什么样的了。
 
-```
+```makefile
 build: clean vet
   @mkdir -p ./Role
   @export GOOS=linux && go build -v .
@@ -44,8 +44,7 @@ clean:
 
 下面是 IAM 项目的 Makefile 所集成的功能，希望会对你日后设计 Makefile 有一些帮助。
 
-```
-
+```sh
 $ make help
 
 Usage: make <TARGETS> <OPTIONS> ...
@@ -108,8 +107,7 @@ Options:
 
 为了方便查看 Makefile 集成了哪些功能，我们需要支持 help 命令。help 命令最好通过解析 Makefile 文件来输出集成的功能，例如：
 
-```
-
+```makefile
 ## help: Show this help info.
 .PHONY: help
 help: Makefile
@@ -140,8 +138,7 @@ help: Makefile
 
 举个例子，下面是 IAM 项目的 Makefile 组织结构：
 
-```
-
+```sh
 ├── Makefile
 ├── scripts
 │   ├── gendoc.sh
@@ -157,8 +154,7 @@ help: Makefile
 
 为了跟 Makefile 的层级相匹配，golang.mk 中的所有目标都按go.xxx这种方式命名。通过这种命名方式，我们可以很容易分辨出某个目标完成什么功能，放在什么文件里，这在复杂的 Makefile 中尤其有用。以下是 IAM 项目根目录下，Makefile 的内容摘录，你可以看一看，作为参考：
 
-```
-
+```makefile
 include scripts/make-rules/golang.mk
 include scripts/make-rules/image.mk
 include scripts/make-rules/gen.mk
@@ -208,8 +204,7 @@ Makefile 允许对目标进行类似正则运算的匹配，主要用到的通�
 
 这里，我们来看一个具体的例子，tools.verify.%（位于scripts/make-rules/tools.mk文件中）定义如下：
 
-```
-
+```makefile
 tools.verify.%:
   @if ! which $* &>/dev/null; then $(MAKE) tools.install.$*; fi
 ```
@@ -232,8 +227,7 @@ IAM 的 Makefile 文件中大量使用了上述函数，如果你想查看这些
 
 如果 Makefile 某个目标的命令中用到了某个工具，可以将该工具放在目标的依赖中。这样，当执行该目标时，就可以指定检查系统是否安装该工具，如果没有安装则自动安装，从而实现更高程度的自动化。例如，/Makefile 文件中，format 伪目标，定义如下：
 
-```
-
+```makefile
 .PHONY: format
 format: tools.verify.golines tools.verify.goimports
   @echo "===========> Formating codes"
@@ -244,16 +238,14 @@ format: tools.verify.golines tools.verify.goimports
 
 你可以看到，format 依赖tools.verify.golines tools.verify.goimports。我们再来看下tools.verify.golines的定义：
 
-```
-
+```makefile
 tools.verify.%:
   @if ! which $* &>/dev/null; then $(MAKE) tools.install.$*; fi
 ```
 
 再来看下tools.install.$*规则：
 
-```
-
+```makefile
 .PHONY: install.golines
 install.golines:
   @$(GO) get -u github.com/segmentio/golines
@@ -303,8 +295,7 @@ BINS ?= $(foreach cmd,${COMMANDS},$(notdir ${cmd}))
 
 在执行 Makefile 的过程中，会输出各种各样的文件，例如 Go 编译后的二进制文件、测试覆盖率数据等，我建议你把这些文件统一放在一个目录下，方便后期的清理和查找。通常我们可以把它们放在_output这类目录下，这样清理时就很方便，只需要清理_output文件夹就可以，例如：
 
-```
-
+```makefile
 .PHONY: go.clean
 go.clean:
   @echo "===========> Cleaning all build output"
@@ -319,8 +310,7 @@ go.clean:
 
 例如，IAM 项目的 Makefile 就大量采用了下面这种命名方式。
 
-```
-
+```makefile
 .PHONY: gen.run
 gen.run: gen.clean gen.errcode gen.docgo
 
@@ -341,8 +331,7 @@ gen.errcode.doc: tools.verify.codegen
 
 这里来看一个例子：
 
-```
-
+```makefile
 gen.errcode.code: tools.verify.codegen
 
 tools.verify.%:    
@@ -357,8 +346,7 @@ install.codegen:
 
 如果我们的 Makefile 设计是：
 
-```
-
+```makefile
 gen.errcode.code: install.codegen
 ```
 
@@ -372,8 +360,7 @@ gen.errcode.code: install.codegen
 
 首先，在 /Makefile 中定义 USAGE_OPTIONS 。定义 USAGE_OPTIONS 可以使开发者在执行 make help 后感知到此 OPTION，并根据需要进行设置。
 
-```
-
+```makefile
 define USAGE_OPTIONS    
                          
 Options:
@@ -388,8 +375,7 @@ export USAGE_OPTIONS
 
 接着，在scripts/make-rules/common.mk文件中，我们通过判断有没有设置 V 选项，来选择不同的行为：
 
-```
-
+```makefile
 ifndef V    
 MAKEFLAGS += --no-print-directory    
 endif
@@ -397,8 +383,7 @@ endif
 
 当然，我们还可以通过下面的方法来使用 V ：
 
-```
-
+```makefile
 ifeq ($(origin V), undefined)                                
 MAKEFLAGS += --no-print-directory              
 endif
@@ -406,8 +391,7 @@ endif
 
 上面，我介绍了 V OPTION，我们在 Makefile 中通过判断有没有定义 V ，来执行不同的操作。其实还有一种 OPTION，这种 OPTION 的值我们在 Makefile 中是直接使用的，例如BINS。针对这种 OPTION，我们可以通过以下方式来使用：
 
-```
-
+```makefile
 BINS ?= $(foreach cmd,${COMMANDS},$(notdir ${cmd}))
 ...
 go.build: go.build.verify $(addprefix go.build., $(addprefix $(PLATFORM)., $(BINS)))
@@ -419,8 +403,7 @@ go.build: go.build.verify $(addprefix go.build., $(addprefix $(PLATFORM)., $(BIN
 
 我们可以在 Makefile 中定义一些环境变量，例如：
 
-```
-
+```makefile
 GO := go                                          
 GO_SUPPORTED_VERSIONS ?= 1.13|1.14|1.15|1.16|1.17    
 GO_LDFLAGS += -X $(VERSION_PACKAGE).GitVersion=$(VERSION) \    
@@ -445,23 +428,19 @@ XARGS := xargs --no-run-if-empty
 
 在编写 Makefile 的过程中，你可能会遇到这样一种情况：A-Target 目标命令中，需要完成操作 B-Action，而操作 B-Action 我们已经通过伪目标 B-Target 实现过。为了达到最大的代码复用度，这时候最好的方式是在 A-Target 的命令中执行 B-Target。方法如下：
 
-```
-
+```makefile
 tools.verify.%:
   @if ! which $* &>/dev/null; then $(MAKE) tools.install.$*; fi
 ```
 
 这里，我们通过 $(MAKE) 调用了伪目标 tools.install.$* 。要注意的是，默认情况下，Makefile 在切换目录时会输出以下信息：
 
-```
-
+```makefile
 $ make tools.install.codegen
 ===========> Installing codegen
 make[1]: Entering directory `/home/colin/workspace/golang/src/github.com/marmotedu/iam'
 make[1]: Leaving directory `/home/colin/workspace/golang/src/github.com/marmotedu/iam'
 ```
-
-
 
 如果觉得 Entering directory 这类信息很烦人，可以通过设置 MAKEFLAGS += --no-print-directory 来禁止 Makefile 打印这些信息。
 
@@ -482,11 +461,6 @@ make[1]: Leaving directory `/home/colin/workspace/golang/src/github.com/marmoted
 走读 IAM 项目的 Makefile 实现，看下 IAM 项目是如何通过 make tools.install 一键安装所有功能，通过 make tools.install.xxx 来指定安装 xxx 工具的。
 
 你编写 Makefile 的时候，还用到过哪些编写技巧呢？欢迎和我分享你的经验，或者你踩过的坑。
-
-
-
-
-
 
 
 
