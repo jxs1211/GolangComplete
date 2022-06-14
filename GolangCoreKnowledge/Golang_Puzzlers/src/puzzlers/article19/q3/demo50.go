@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"net/http"
 )
 
 func ShowPanicInRecover() {
@@ -54,8 +55,14 @@ func TranslatePanicToError() (err error) {
 }
 
 func main() {
+	// fmt.Println(utf8.RuneCountInString("shen沈"))
+	// fmt.Println(len("shen沈"))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hi: %s\n", r.URL)
+	})
+	http.ListenAndServe(":8080", nil)
 	// ShowPanicInRecover()
-	ShowDeferExample()
+	// ShowDeferExample()
 	// if err := TranslatePanicToError(); err != nil {
 	// 	fmt.Println(err)
 	// }
