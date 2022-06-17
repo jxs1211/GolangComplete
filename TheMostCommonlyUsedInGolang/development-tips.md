@@ -20,7 +20,10 @@
     - Go的热门功能列表[https://golang.hotexamples.com/zh/site/trends?type=go%7Cf]
     - 最受欢迎的Golang类型和方法[https://golang.hotexamples.com/zh/site/trends?type=go%7Cc]
 
-# web开发
+# 8小时go web中间件开发实战
+
+https://github.com/flycash/toy-web
+
 
 - 接口是人对现实的抽象的形式化表达
 - 评估现实问题的复杂度，设计接口定义抽象，先有接口，再有实现
