@@ -2,10 +2,41 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"sync"
 )
 
+type Node struct {
+	left  *Node
+	right *Node
+}
+
+type Person struct {
+	name string
+	age  int
+}
+
 func main() {
+	// p := &Person{}
+	var p Person
+	// if p != nil {
+	// 	fmt.Printf("The Person: %+v\n", p)
+	// 	return
+	// }
+	// if p == struct{}{} {
+	// 	fmt.Println("equal")
+	// }
+	p2 := Person{}
+	if ok := reflect.DeepEqual(p, p2); ok {
+		fmt.Println("equal")
+	} else {
+		fmt.Println("not equal")
+	}
+	fmt.Printf("Person: %+v\n", p)
+	fmt.Printf("name: %q\n", p.name)
+}
+
+func showGoroutinue() {
 	var wg sync.WaitGroup
 	done := make(chan struct{})
 	wq := make(chan interface{})

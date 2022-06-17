@@ -67,3 +67,7 @@ func main() {
 	// 	fmt.Println(err)
 	// }
 }
+
+func showHttpURL() {
+	r := http.Request
+}
