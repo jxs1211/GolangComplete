@@ -57,7 +57,7 @@ func OverwriteString(str string, value rune, n int) string {
 
 这是模糊测试的基本写法：
 
-```
+```go
 // overwrite_string_test.go
 
 func FuzzBasicOverwriteString(f *testing.F) {
@@ -100,7 +100,7 @@ int(2)
 
 现在我们已经发现了一个错误，可以进入我们的代码修复问题。查看实际导致 panic ( `overwrite_string.go:16`) 的代码行，该代码似乎试图访问长度为 4 的字符串的索引 4，这导致了数组索引越界错误。你可以通过更改检查 `if n > len(str)` 以测试大于或等于来修复错误：
 
-```
+```go
 // overwrite_string.go
 
 // OverwriteString overwrites the first 'n' characters in a string with
@@ -124,7 +124,7 @@ func OverwriteString(str string, value rune, n int) string {
 
 通过使用输出中提供的 fuzzer 命令重新运行崩溃的测试用例，确认修复了 Bug：
 
-```
+```sh
 $ go test -v -count=1 -run=FuzzBasicOverwriteString/2bac7bdf139ad0b2de37275db2a606ecb335bd344500173b451e9dfc3658c12f
 
 === RUN   FuzzBasicOverwriteString
@@ -141,7 +141,7 @@ ok   github.com/fuzzbuzz/go-fuzzing-tutorial/introduction 0.001s
 
 现在，我完全承认，在我写这篇文章的时候，我希望这个改变能够满足基本的模糊测试，但是如果你在这个改变之后重新运行模糊器，你会注意到一个全新的错误出现：
 
-```
+```sh
 $ go test -fuzz FuzzBasicOverwriteString
 fuzz: elapsed: 0s, gathering baseline coverage: 0/17 completed
 fuzz: elapsed: 0s, gathering baseline coverage: 17/17 completed, now fuzzing with 8 workers
@@ -196,7 +196,7 @@ int(60)
 
 这很容易自己检查。如果你运行以下 Go 代码片段：
 
-```
+```go
 str := "Ö"
 runeArray := []rune(str)
 fmt.Println("Str len:", len(str), "Rune array len:", len(runeArray))
@@ -210,7 +210,7 @@ Str len: 2 Rune array len: 1
 
 有了关于 Go 的字符串实现的重要信息，再次重写 if 语句，从 `if n >= len(str)` 改为 `if n >= utf8.RuneCountInString(str)`。因此我们想要比较的是字符数而不是字节数：
 
-```
+```go
 // overwrite_string.go
 
 // OverwriteString overwrites the first 'n' characters in a string with
@@ -246,7 +246,7 @@ go test -fuzz FuzzBasicOverwriteString
 
 这可以通过以下测试进行一般化：
 
-```
+```go
 // overwrite_string_test.go
 
 func FuzzOverwriteStringSuffix(f *testing.F) {
@@ -268,7 +268,7 @@ func FuzzOverwriteStringSuffix(f *testing.F) {
 
 运行测试会发现另一个 Bug：
 
-```
+```sh
 $ go test -fuzz FuzzOverwriteStringSuffix
 
 fuzz: elapsed: 0s, gathering baseline coverage: 0/54 completed
@@ -292,7 +292,7 @@ FAIL github.com/fuzzbuzz/go-fuzzing-tutorial/introduction 0.031s
 
 最终`OverwriteString`函数应该如下所示：
 
-```
+```go
 // overwrite_string.go
 
 // OverwriteString overwrites the first 'n' characters in a string with
@@ -325,3 +325,178 @@ func OverwriteString(str string, value rune, n int) string {
 后续文章将深入研究你可以找到的错误类型，调查一些真实世界的模糊测试错误，并讨论如何自动化你的模糊测试，以便 CI 在你睡着时发现错误。
 
 > 作者：Everest Munro-Zeisberger，原文链接：https://blog.fuzzbuzz.io/go-fuzzing-basics
+
+
+
+# Go 1.18 让写测试的代码量骤减，你会开始写测试吗？
+
+Original 网管 [网管叨bi叨](javascript:void(0);) *2022-06-20 08:45* *Posted on 北京*
+
+收录于合集#Go语言实战技巧44个
+
+模糊测试是一种向程序提供随机意外的输入以测试可能的崩溃或者边缘情况的方法。通过模糊测试可以揭示一些逻辑错误或者性能问题，因此使用模糊测试可以让程序的稳定性和性能都更有保证。
+
+Go 从1.18 版本开始正式把模糊测试（Go Fuzz）加入到了其工具集中，不再依靠三方库就能在程序代码中进行模糊测试。那么为什么要引入模糊测试呢，引入后我们在写单元测试的时候要有哪些调整呢？
+
+首先我们来聊聊为什么引入模糊测试。
+
+## 为什么引入模糊测试
+
+大家看文章开头第一段的解释，那就是Go官方要引入模糊测试的原因。估计各位看了想要打人，哈，那我就结合个简单的例子再把上面那段话要表达的意思，用代码再解释一遍。
+
+大家先不考虑什么模糊测试的事儿，就单纯给下面这个工具函数写一个单测，我们该怎么写。
+
+```go
+func Equal(a []byte, b []byte) bool {
+ for i := range a {
+  if a[i] != b[i] {
+   return false
+  }
+ }
+ return true
+}
+```
+
+这个工具函数将接收两个字节切片，比较他们的值是否相等。那么为了通过单测测试这个工具函数是否能如预期那样完成任务，我们就需要提供一些样本数据，来测试函数的知识结果。
+
+### **单元测试怎么写**
+
+我们在之前Go 单元测试入门中，给大家介绍过表格测试，就是为单测的执行提供样本数据的，那么这个表格测试该怎么写呢？这里直接放代码了，如果对表格测试和各种Go单测知识不了解的可以回看之前的文章：Go单元测试基础，文末会给出链接。
+
+```go
+func TestEqualWithTable(t *testing.T) {
+ tests := []struct {
+  name   string
+  inputA []byte
+  inputB []byte
+  want   bool
+ }{
+  {"right case", []byte{'f', 'u', 'z', 'z'}, []byte{'f', 'u', 'z', 'z'}, true},
+  {"right case", []byte{'a', 'b', 'c'}, []byte{'b', 'c', 'd'}, false},
+ }
+
+ for _, tt := range tests {
+  tt := tt
+  t.Run(tt.name, func(t *testing.T) {
+   if got := Equal(tt.inputA, tt.inputB); got != tt.want {
+    t.Error("expected " + strconv.FormatBool(tt.want) + ",  got " +
+        strconv.FormatBool(got))
+   }
+  })
+ }
+}
+```
+
+上面这个单元测试使用的两个样本数据能让测试通过，但不代表我们的工具函数就完美无缺了，毕竟这里的两个样本都太典型了，如果你把输入的两个切片搞的不一样，工具函数直接就`index out of range`，程序直接挂掉了。
+
+如果没有模糊测试呢，我们就需要在表格测试里尽量多的提供样本，才能测出各种边界情况下程序是否符合预期。
+
+不过让自己提供样本测试，主观性太强，有的人能想到很多边界条件有的就不行，再加上我国互联网公司程序员糟糕的职场生存环境，又要保证BUG少稳定，又要快，这个时候模糊测试确实能帮助我们节省很多想样本的工作量。
+
+### **用模糊测试简化**
+
+现在我们换用Go 1.18 的 Fuzz 模糊测试，来测试下我们的工具函数。
+
+```go
+func FuzzEqual(f *testing.F) {
+ //f.Add([]byte{'a', 'b', 'c'}, []byte{'a', 'b', 'c'})
+ f.Fuzz(func(t *testing.T, a []byte, b []byte) {
+  Equal(a, b)
+ })
+}
+```
+
+虽然模糊测试是1.18 新引入的，但只是节省了我们写表格测试提供样本的流程，其他流程和以前的单元测试并不差别，所用到的知识也没有变化。
+
+可以看到使用模糊测试后，代码量明显减少了很多。模糊测试会帮我们生产随机的输入，来供要测试的目标来使用。上面两个参数的输入是随机产生的（也有规则，模糊测试会先测各种空输入，这个规则我们可以不用管）
+
+也可以通过`f.Add()`方法添加语料，注意这里语料设置的个数和顺序要和目标函数里的输入参数保持一致（就是除了 testing.T之外的参数）
+
+此外还有点明显的差异大家一定要注意，使用模糊测试后，测试函数的声明跟普通单测的不一样
+
+```go
+// 普通单元测试
+TestXXX(t *testing.T){}
+// 使用模糊测试的测试函数，必须以Fuzz开头，形参类型为*testing.F
+FuzzXXX(f *testing.F) {}
+```
+
+### **执行模糊测试**
+
+模糊测试执行的时候需要给 `go test`加上`-fuzz`这个标记。
+
+```sh
+➜  go test -fuzz .
+warning: starting with empty corpus
+fuzz: elapsed: 0s, execs: 0 (0/sec), new interesting: 0 (total: 0)
+fuzz: minimizing 57-byte failing input file
+fuzz: elapsed: 0s, minimizing
+--- FAIL: FuzzEqual (0.04s)
+   --- FAIL: FuzzEqual (0.00s)
+       testing.go:1349: panic: runtime error: index out of range [0] with length 0
+```
+
+执行模糊测试后，就能测出我上面说的索引越界的问题，这个时候我们就可以回去完善我们的工具函数，然后再进行模糊测试了，通过几轮执行，会让被测试的函数足够健壮。
+
+我们示例的工具函数足够简单，所以修复起来也超简单，价格长度判断就可以了。
+
+```go
+func Equal(a []byte, b []byte) bool {
+ if len(a) != len(b) {
+  return false
+ }
+
+ for i := range a {
+  if a[i] != b[i] {
+   return false
+  }
+ }
+ return true
+}
+```
+
+再度执行模糊测试后程序不再会报错，不过这个时候你应该发现，测试程序会一直执行，除非主动停下来，或者发现了测试失败的情况才能让模糊测试终止。
+
+这就是模糊测试和普通单测的另一个大区别了，普通单测执行完我们提供的 Case 后就会停止，而模糊测试是会不停的跑样本，直到发生测试失败的情况才会停止。这个时候我们就可以用命令指定一个测试时长，让模糊测试到时自动停止。
+
+```sh
+go test -fuzz=Fuzz -fuzztime=10s  .
+```
+
+这里我们通过 fuzztime 这个标志，给模糊测试指定了 10 s的测试时长，到时模糊测试就会自动停止。
+
+```sh
+➜  go test -fuzz=Fuzz -fuzztime=10s  .
+fuzz: elapsed: 0s, gathering baseline coverage: 0/10 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 10/10 completed, now fuzzing with 8 workers
+fuzz: elapsed: 3s, execs: 852282 (284056/sec), new interesting: 0 (total: 10)
+fuzz: elapsed: 6s, execs: 1748599 (298745/sec), new interesting: 0 (total: 10)
+fuzz: elapsed: 9s, execs: 2653073 (301474/sec), new interesting: 0 (total: 10)
+fuzz: elapsed: 10s, execs: 2955038 (274558/sec), new interesting: 0 (total: 10)
+PASS
+ok      golang-unit-test-demo/fuzz_test_demo    11.783s
+➜  fuzz_test_demo git:(master) ✗ 
+```
+
+## 怎么写好一个模糊测试
+
+相信通过上面的例子，其实大家已经看到模糊测试该怎么编写。为了让内容更吸引人，文章并没有上来就给大家罗列一堆名称概念，这里我们再把理论上的一些东西补充一下，这样未来自己编写模糊测试的时候自己心里就更有谱啦。
+
+### **模糊测试的结构**
+
+下面是官方文档里，给出的一张 "模糊测试构成元素" 的图
+
+![Image](https://mmbiz.qpic.cn/mmbiz_png/z4pQ0O5h0f5VoaTYCN25RU1HB6qljlEj7kPwuTe6b4ldAicwIXUwTfDOw1v6jwVbzpDgAJTqna6bSn4P2z0q6nQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+模糊测试的结构，来自：https://go.dev/doc/fuzz/
+
+这张图里能看出来这几点：
+
+- Fuzz test: 即整个模糊测试函数，它的函数签名要求，函数名必须以关键字 Fuzz 开头，只有一个类型为`*testing.F`的参数，且没有返回值。
+- 模糊测试也是测试，所以跟单测一样，必须位于`_test.go`文件中，可以语单测在统一文件。
+- Fuzz Target：模糊测试中，由 f.Fuzz 指定的要执行的测试函数叫 fuzz target，一个模糊测试中只能包含一个 fuzz target，且它的第一个参数必须是`*testing.T`类型的，后面跟至少一个模糊参数，这个也好理解，如果没有这个参数，那随机输入该往哪输入呢。
+- Fuzz argument：这个一条说过了，就是fuzz target 中第一个参数以后的参数都叫模糊参数，用来接收模糊测试随机生成的样本，这个参数数量应该是要跟我们的被测函数的形参数一致的。
+- Seed corpus：语料，这个单词儿我也没见过，大家记住就是提供了它后，生产的随机参数都跟这个语料有相关性，不是瞎随机的，且用 f.Add 设置的语料个数，要跟模糊参数的个数、顺序、类型上保持一致。
+
+更详细的解释，请参考官方文档：https://go.dev/doc/fuzz/
+
