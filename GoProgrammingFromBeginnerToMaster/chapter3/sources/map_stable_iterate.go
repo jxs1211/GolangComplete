@@ -22,7 +22,7 @@ func showMapStableRead() {
 		3: 13,
 	}
 
-	for k, _ := range m {
+	for k := range m {
 		sl = append(sl, k)
 	}
 	fmt.Println(sl)
@@ -38,7 +38,7 @@ func showMapStableRead2() {
 		3: 3,
 	}
 	s := make([]int, 0, len(m))
-	for k, _ := range m {
+	for k := range m {
 		s = append(s, k)
 	}
 	fmt.Println(s)
