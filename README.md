@@ -160,51 +160,185 @@ https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0
 16.3 包名冲突问题130
 
 第17条 理解Go语言表达式的求值顺序132
+
 17.1 包级别变量声明语句中的表达式求值顺序133
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_1.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_2.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_3.go
+
 17.2 普通求值顺序136
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_4.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_5.go
+
 17.3 赋值语句的求值139
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_6.go
+
 17.4 switch/select语句中的表达式求值140
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_7.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/evaluation_order_8.go
 
 第18条 理解Go语言代码块与作用域143
+
 18.1 Go代码块与作用域简介143
 18.2 if条件控制语句的代码块145
 18.3 其他控制语句的代码块规则简介148
 
 第19条 了解Go语言控制语句惯用法及使用注意事项154
 19.1 使用if控制语句时应遵循“快乐路径”原则154
+
+- 减少使用else语句，失败立即返回
+- 成功的逻辑(快乐路径)始终居左并延续到函数结尾，没有嵌入if-else语句中
+- 快乐路径的返回一般在函数的最后一行
+- 尝试将正常逻辑提取出来，放到快乐路径中
+- 如果无法做到以上一点，很可能函数内部逻辑过于复杂，可以将深度缩进到if-else的语句中的代码析出到一个函数里面，然后再对原函数实施快乐路径
+- 整个代码布局扁平，减少深度缩进
+- 代码逻辑一目了然，可读性好
+
 19.2 for range的避“坑”指南156
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_1.go
+
+range a实际上是range a’， a'是a的副本
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_2.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/for_range_bench_test.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_3.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_4.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_5.go
+
 19.3 break跳到哪里去了165
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_6.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter3/sources/control_structure_idiom_7.go
+
 19.4 尽量用case表达式列表替代fallthrough167
 
 第四部分 函数与方法
 
 第20条 在init函数中检查包级变量的初始状态170
+
 20.1 认识init函数170
+
+- 无法被显示调用
+- 每个init函数在整个程序生命周期中只会被执行一次
+- 不要依赖init函数的执行次序
+
 20.2 程序初始化顺序171
+每个文件的执行次序：
+const->var->init()
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/package-init-order/main.go
+
 20.3 使用init函数检查包级变量的初始状态174
 
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/get_image_size.go
+
 第21条 让自己习惯于函数是“一等公民”179
+
 21.1 什么是“一等公民”179
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_1.go
+
 21.2 函数作为“一等公民”的特殊运用183
 
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_2.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_3.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_4.go
+
+闭包：是在函数内部定义的匿名函数，并且这个匿名函数可以访问定义它的外部函数的作用域
+
+函子：
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_5.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_6.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_7.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_8.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/function_as_first_class_citizen_9.go
+
 第22条 使用defer让函数更简洁、更健壮192
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_1.go
+
 22.1 defer的运作机制193
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_2.go
+
 22.2 defer的常见用法194
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_3.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_4.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_5.go
+
 22.3 关于defer的几个关键问题199
 
-第23条 理解方法的本质以选择
-正确的receiver类型206
+- 哪些函数可以被deferred
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_6.go
+
+- 求值时机
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/deferred_func_7.go
+
+- defer的性能损耗
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/defer_perf_benchmark_1_test.go
+
+第23条 理解方法的本质以选择正确的receiver类型206
+
 23.1 方法的本质207
+- 第一个参数为绑定类型实例的函数
+
 23.2 选择正确的receiver类型208
+
+- 是否对receiver进行修改
+- 传入receiver时的性能开销
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_nature_1.go
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_nature_2.go
+
 23.3 基于对Go方法本质的理解巧解难题210
 
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_nature_3.go
+
 第24条 方法集合决定接口实现214
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_set_1.go
+
 24.1 方法集合215
+
+go run && \
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_set_2.go && \
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_set_utils.go
+
 24.2 类型嵌入与方法集合216
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_set_3.go
+...
+method_set_10.go
+
 24.3 defined类型的方法集合226
+
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_set_11.go
+
 24.4 类型别名的方法集合227
 
+https://github.com/jxs1211/GolangComplete/blob/a7f196d7c5fa7e5d96294bba884acdce0c86698a/GoProgrammingFromBeginnerToMaster/chapter4/sources/method_set_12.go
+
 第25条 了解变长参数函数的妙用230
+
 25.1 什么是变长参数函数230
 25.2 模拟函数重载233
 25.3 模拟实现函数的可选参数与默认参数236
