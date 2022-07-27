@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"geektime/toy-web/demo"
 	_ "geektime/toy-web/demo/filters"
-	"geektime/toy-web/pkg"
 	"net/http"
 	"time"
 )
@@ -22,7 +21,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "这是创建用户")
 }
 
-func order(w http.ResponseWriter, r *http.Request)  {
+func order(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "这是订单")
 }
 
@@ -46,18 +45,18 @@ func main() {
 		"demo/static", "/static",
 		web.WithMoreExtension(map[string]string{
 			"mp3": "audio/mp3",
-		}), web.WithFileCache(1 << 20, 100))
+		}), web.WithFileCache(1<<20, 100))
 	// 访问 Get http://localhost:8080/static/forest.png
 	server.Route("GET", "/static/*", staticHandler.ServeStaticResource)
 
 	go func() {
-		if err := adminServer.Start(":8081"); err != nil {
+		if err := adminServer.Start(":9081"); err != nil {
 			panic(err)
 		}
 	}()
 
 	go func() {
-		if err := server.Start(":8080"); err != nil {
+		if err := server.Start(":9080"); err != nil {
 			// 快速失败，因为服务器都没启动成功，啥也做不了
 			panic(err)
 		}
@@ -90,7 +89,3 @@ func main() {
 	//web.NewSdkHttpServerWithFilterNames("my-server", filterNames...)
 
 }
-
-
-
-

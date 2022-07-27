@@ -1,0 +1,144 @@
+﻿<h1>Go Optimizations 101</h1>
+
+<p>
+This book provides some code performance optimization tricks, tips, and suggestions,
+which include
+</p>
+
+<ul>
+<li>how to consume less CPU resources.</li>
+<li>how to consume less memory.</li>
+<li>how to make less memory allocations.</li>
+<li>how to control memory allocation places.</li>
+<li>how to reduce garbage collection pressure.</li>
+</ul>
+
+<p><small><i>
+(Please follow Go 101's official Twitter account <a href="https://twitter.com/go100and1">@go100and1</a>
+to get latest Go 101 news and learn all kinds of Go knowledge.)
+</i></small></p>
+
+<div id="ebooks" class="alert alert-success row item-row">
+	<div class="col-xs-12 col-sm-3 text-center" style="font-size: small;">
+		<img src="res/cover-1000x.jpg" style="width: 160px;" alt="Go Optimizations 101"></img>
+		<p>(about 150 pages, 75+ facts and suggestions)</p>
+	</div>
+	<div class="col-xs-12 col-sm-9" style="padding-top: 6px;"><small>
+		The digital versions of this book are available at the following places:
+		<ul>
+		<li>
+			<a href="https://leanpub.com/go-optimizations-101">Leanpub store</a>,
+			<i>$7.99+</i> (Or buy this book through <a href="https://leanpub.com/b/go-optimizations-details-generics">this</a> or <a href="https://leanpub.com/b/go-optimizations-details">this</a> book bundle).
+		</li>
+		<li>
+			<a href="https://books.apple.com/book/id1609924340">Apple Books store</a>,
+			<i>$7.99</i>.
+		</li>
+		<li>
+			<a href="https://www.amazon.com/dp/B09NT2HJCM">Amazon Kindle store</a>,
+			<i>$7.99</i>.
+		</li>
+		</ul>
+		
+		<p>
+		(Please note that the current prices are available for a limited period only.
+		The price will be raised to $9.99 in a few days. Honestly speaking, the book is worth $20+.)
+		</p>
+
+		<p>
+		Tapir, the author of Go 101, has spent 5+ years on writing Go 101 series books
+		and maintaining the go101.org website.
+		New contents will be continually added to the book series and the website from time to time.
+		Tapir is also an indie game developer.
+		If you would like to, you can support the book and the website by
+		playing <a href="https://www.tapirgames.com">Tapir's games</a>
+		(made for both Android and iPhone/iPad).
+		</p>
+
+		<p>
+		Thanks to Olexandr Shalakhin for the permission of using one of
+		<a href="https://github.com/shalakhin/gophericons">the wonderful gopher icon images</a>
+		in the book cover.
+		</p>
+	</small></div>
+</div>
+
+
+
+<div>
+
+<h3>Index:</h3>
+
+<!-- index starts (don't remove) -->
+
+<div id="book-index">
+	
+<ul class="index part">
+	<li><a class="index" href="0.0-acknowledgements.html">Acknowledgments</a></li>
+	<li><a class="index" href="0.1-introduction.html">About Go Optimizations 101</a></li>
+	<li>Value Parts and Value Sizes <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>value/type sizes</li>
+		<li>memory alignments</li>
+		<li>struct padding</li>
+		<li>avoid larger copy costs</li>
+	</ul>
+	<li><a class="index" href="0.3-memory-allocations.html">Memory Allocations</a></li>
+	<li>Stack and Escape Analysis <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>escape analysis</li>
+		<li>how to control value allocation places</li>
+		<li>stacks growth and shrinkage</li>
+		<li>how to reduce stack grow times</li>
+	</ul>
+	<li>Garbage Collection <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>GC pacer</li>
+		<li>how to reduce GC pressure</li>
+		<li>control GC frequency</li>
+	</ul>
+	<li><a class="index" href="1-pointer.html">Pointers</a></li>
+	<li>Structs <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>3 facts/suggestions</li>
+	</ul>
+	<li>Arrays and Slices <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>10+ facts/suggestions</li>
+	</ul>
+	<li>String and Byte Slices <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>10+ facts/suggestions</li>
+	</ul>
+	<li>BCE (Bound Check Eliminate) <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>the cases BCE works for</li>
+		<li>the cases BCE doesn't work for</li>
+		<li>the cases BCE works for when given hints</li>
+	</ul>
+	<li><a class="index" href="6-map.html">Maps</a></li>
+	<li>Channels <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>3 facts/suggestions</li>
+	</ul>
+	<li>Functions <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>how to make a function inline-able</li>
+		<li>how to make a function not inline-able</li>
+		<li>pointer parameters/results vs. non-pointer ones</li>
+		<li>named results vs. anonymous ones</li>
+		<li>10+ facts/suggestions</li>
+	</ul>
+	<li>Interfaces <sup><small>(available in <a href="#ebooks">the paid ebooks</a>)</small></sup></li>
+	<ul>
+		<li>value boxing costs</li>
+		<li>3+ facts/suggestions</li>
+	</ul>
+</ul>
+
+
+</div>
+
+<!-- index ends (don't remove) -->
+
+</div>

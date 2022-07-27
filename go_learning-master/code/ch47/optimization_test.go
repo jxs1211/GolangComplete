@@ -76,5 +76,4 @@ func BenchmarkProcessRequestOld(b *testing.B) {
 		_ = processRequestOld(reqs)
 	}
 	b.StopTimer()
-
 }

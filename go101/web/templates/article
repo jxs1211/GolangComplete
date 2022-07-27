@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Golang online books, articles, tools, etc.">
+		<meta name="author" content="">
+		<link rel="icon" href="/static/go101/images/101-v1.ico">
+		<link rel="apple-touch-icon" sizes="152x152" href="/static/go101/images/iphone-v1.jpeg">
+	
+		<title>{{- if .Title -}}{{.Title}} - {{- end -}}Go 101</title>
+
+
+
+		{{- if false }} !!!!! NOTE: sync the names in go101 js file. !!!!! {{ end}}
+
+		{{- if eq .Theme "light"}}
+
+		<link id="css-bs" href="/static/bootstrap/v4.5.0/css/bootstrap.min.css" rel="stylesheet">
+		<link id="css-go101" href="/static/go101/css/v991-light.css" rel="stylesheet">
+		<link id="css-prism" href="/static/prism/2020-08-03-light/prism.css" rel="stylesheet">
+		<script id="js-prism" src="/static/prism/2020-08-03-light/prism.js"></script>
+		{{- else -}}
+		<link id="css-bs" href="/static/bootstrap/v4.0.3-dark/css/bootstrap.min.css" rel="stylesheet">
+		<link id="css-go101" href="/static/go101/css/v991-dark.css" rel="stylesheet">
+		<link id="css-prism" href="/static/prism/2020-08-03-dark/prism.css" rel="stylesheet">
+		<script id="js-prism" src="/static/prism/2020-08-03-dark/prism.js"></script>
+		{{- end}}
+
+
+		<script src="/static/jquery/jquery.min-v1.11.2.js"></script>
+		<script src="/static/go101/js/v5.js"></script>
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		
+		<style>
+		div, p, ul, li, td, th {line-height: 1.55;}
+		</style>
+
+		<script>
+		var theme = {{ .Theme  }}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+
+		{{ with .Article -}}
+		{{- if eq .Group "website" -}}
+		
+			{{- template "body" . -}}
+			
+		{{- else -}}
+
+			{{- template "navbar" . -}}
+
+			{{- template "body" . -}}
+
+			{{- template "promotions" . -}}
+		
+		{{- end -}}
+		{{- end }}
+
+		</div>
+	</body>
+</html>
+	
+{{- define "navbar" -}}
+
+{{- $is_fundamentals := (eq .Group "fundamentals") -}}
+{{- $is_generics := (eq .Group "generics") -}}
+{{- $is_optimizations := (eq .Group "optimizations") -}}
+{{- $is_details_and_tips := (eq .Group "details-and-tips") -}}
+{{- $is_quizzes := (eq .Group "quizzes") -}}
+
+{{- $is_apps_and_libs := (eq .Group "apps-and-libs") -}}
+{{- $is_blog := (eq .Group "blog") -}}
+
+{{- $is_index_page := (eq .FilenameWithoutExt "101") -}}
+
+
+<div class="row nav-bar-with-borders">
+	<div class="col-xs-6 col-sm-4 nav-item-inactive">
+		<a href="/"><small>Home</small></a> <span class="new-text"><sup>new!</sup></span>
+	</div>
+	
+	{{- if and $is_fundamentals $is_index_page -}}
+	<div class="col-xs-6 col-sm-4 nav-item-active">
+		<small>Go 101</small>
+	</div>
+	{{- else -}}
+	<div class="col-xs-6 col-sm-4 nav-item- {{- if not $is_fundamentals -}} in {{- end -}} active">
+		<a href="/article/101.html"><small>Go 101</small></a>
+	</div>
+	{{- end -}}
+	
+	{{- if and $is_generics $is_index_page -}}
+	<div class="col-xs-6 col-sm-4 nav-item-active">
+		<small>Go Generics 101</small>
+	</div>
+	{{- else -}}
+	<div class="col-xs-6 col-sm-4 nav-item- {{- if not $is_generics -}} in {{- end -}} active">
+		<a href="/generics/101.html"><small>Go Generics 101</small></a>
+	</div>
+	{{- end -}}
+	
+	{{- if and $is_details_and_tips $is_index_page -}}
+	<div class="col-xs-6 col-sm-4 nav-item-active">
+		<small>Go Details &amp; Tips 101</small>
+	</div>
+	{{- else -}}
+	<div class="col-xs-6 col-sm-4 nav-item- {{- if not $is_details_and_tips -}} in {{- end -}} active">
+		<a href="/details-and-tips/101.html"><small>Go Details &amp; Tips 101</small></a>
+	</div>
+	{{- end -}}
+	
+	{{- if and $is_optimizations $is_index_page -}}
+	<div class="col-xs-6 col-sm-4 nav-item-active">
+		<small>Go Optimizations 101</small>
+	</div>
+	{{- else -}}
+	<div class="col-xs-6 col-sm-4 nav-item- {{- if not $is_optimizations -}} in {{- end -}} active">
+		<a href="/optimizations/101.html"><small>Go Optimizations 101</small></a>
+	</div>
+	{{- end -}}
+	
+	{{- if and $is_quizzes $is_index_page -}}
+	<div class="col-xs-6 col-sm-4 nav-item-active">
+		<small>Go Quizzes 101</small>
+	</div>
+	{{- else -}}
+	<div class="col-xs-6 col-sm-4 nav-item- {{- if not $is_quizzes -}} in {{- end -}} active">
+		<a href="/quizzes/101.html"><small>Go Quizzes 101</small></a>
+	</div>
+	{{- end -}}
+	
+	<div class="col-xs-6 col-sm-4 nav-item-inactive" style="color: #777;"><small>Go HowTo 101</small></div>
+	
+	<div class="col-xs-6 col-sm-4 nav-item-inactive" style="color: #777;"><small>Go Practices 101</small></div>
+	
+	<div class="col-xs-6 col-sm-4 nav-item-inactive" style="color: #777;"><small>Go Agg 101</small></div>
+	
+	<div class="col-xs-6 col-sm-4 nav-item-inactive" style="color: #777;"><small>Go 101 Blog</small></div>
+	
+	{{- if and $is_apps_and_libs $is_index_page -}}
+	<div class="col-xs-6 col-sm-4 nav-item-active">
+		<small>Go 101 Apps &amp; Libs</small>
+	</div>
+	{{- else -}}
+	<div class="col-xs-6 col-sm-4 nav-item- {{- if not $is_apps_and_libs -}} in {{- end -}} active">
+		<a href="/apps-and-libs/101.html"><small>Go 101 Apps &amp; Libs</small></a>
+	</div>
+	{{- end -}}
+	
+	<div class="col-xs-6 col-sm-4 nav-item-inactive" style="color: #777;" id="theme-switch"><small>Theme: dark/light</small></div>
+
+</div>
+
+<div class="alert alert-warning text-center"><small>
+Three new books, <a href="/optimizations/101.html">Go Optimizations 101</a>,
+<a href="/details-and-tips/101.html">Go Details &amp; Tips 101</a>
+and <a href="/generics/101.html">Go Generics 101</a>
+are published now.
+It is most cost-effective to buy them all through <a href="https://leanpub.com/b/go-optimizations-details-generics">this book bundle</a>
+in the Leanpub book store.
+</small></div>
+<p>
+</p>
+
+{{ end }}
+
+
+
+
+{{ define "body" }}
+
+{{ if .Title }}{{ .Title }}{{ end }}
+
+{{ .Content -}}
+
+{{ end }}
+
+
+
+
+{{ define "promotions" }}
+
+{{- $is_fundamentals := (eq .Group "fundamentals") -}}
+{{- $is_generics := (eq .Group "generics") -}}
+{{- $is_optimizations := (eq .Group "optimizations") -}}
+{{- $is_details_and_tips := (eq .Group "details-and-tips") -}}
+{{- $is_quizzes := (eq .Group "quizzes") -}}
+
+{{- $is_apps_and_libs := (eq .Group "apps-and-libs") -}}
+{{- $is_blog := (eq .Group "blog") -}}
+
+{{- $not_index_page := (ne .FilenameWithoutExt "101") -}}
+
+
+{{ if and $not_index_page .Index -}}
+
+<hr>
+
+<div class="text-center"><a href="#i-{{ .Filename }}">Index↡</a></div>
+
+{{ end }}
+
+<hr>
+
+<div id="contact" class="alert alert-success"><small>
+
+<p>
+The <b><i>Go 101</i></b> project is hosted on
+<a href="https://github.com/go101/go101">Github</a>.
+Welcome to improve <b><i>Go 101</i></b> articles
+by submitting corrections for all kinds of mistakes,
+such as typos, grammar errors, wording inaccuracies,
+description flaws, code bugs and broken links.
+</p>
+
+<p>
+If you would like to learn some Go details and facts every serveral days,
+please follow Go 101's official Twitter account <a href="https://twitter.com/go100and1">@go100and1</a>
+or join <a href="https://join.slack.com/t/go-101/shared_invite/zt-y2pvwg00-Oz7lDDJu44l~hZsFRUApiA">Go 101 slack channels</a>.
+</p>
+
+</small></div>
+
+<div class="alert alert-warning"><small>
+
+
+{{ if $not_index_page -}}
+<div id="ebooks">
+
+	{{- if $is_fundamentals }}
+The digital versions of this book are available at the following places:
+<ul>
+<li>
+	<a href="https://leanpub.com/go101">Leanpub store</a>,
+	<i>$19.99+</i>.
+</li>
+<li>
+	<!--a href="https://www.amazon.com/dp/B07Q3HWZ98">Amazon Kindle store</a>,
+	<i>$39.99</i>. -->
+	Amazon Kindle store, <i>(unavailable currently)</i>.
+</li>
+<li>
+	<a href="https://books.apple.com/book/id1459984231">Apple Books store</a>,
+	<i>$19.99</i>.
+</li>
+<li>
+	<a href="https://play.google.com/store/books/details?id=Dc1wEAAAQBAJ">Google Play store</a>,
+	<i>$19.99</i>.
+</li>
+<li>
+	<a href="https://github.com/go101/go101/releases">Free ebooks</a>,
+	including pdf, epub and azw3 formats.
+</li>
+</ul>
+	{{ end -}}
+
+	{{- if $is_optimizations }}
+The digital versions of this book are available at the following places:
+<ul>
+<li>
+	<a href="https://leanpub.com/go-optimizations-101">Leanpub store</a>,
+	<i>$7.99+</i> (Or buy this book from <a href="https://leanpub.com/b/go-optimizations-details-generics">this</a> or <a href="https://leanpub.com/b/go-optimizations-details">this</a> book bundle).
+</li>
+<li>
+	<a href="https://books.apple.com/book/id1609924340">Apple Books store</a>,
+	<i>$7.99</i>.
+</li>
+<li>
+	<a href="https://www.amazon.com/dp/B09NT2HJCM">Amazon Kindle store</a>,
+	<i>$7.99</i>.
+</li>
+</ul>
+	{{ end -}}
+
+	{{- if $is_details_and_tips }}
+The digital versions of this book are available at the following places:
+<ul>
+<li>
+	<a href="https://leanpub.com/go-details-and-tips-101">Leanpub store</a>,
+	<i>$7.99+</i> ($7.99 is the minimum book price at Leanpub. It is more cost-effective to buy this book from <a href="https://leanpub.com/b/go-optimizations-details">this</a> or <a href="https://leanpub.com/b/go-optimizations-details-generics#bundle-page-go-details-and-tips-101">this</a> book bundle).
+</li>
+<li>
+	<a href="https://www.amazon.com/dp/B09NT56PW8">Amazon Kindle store</a>,
+	<i>$4.99</i>.
+</li>
+<li>
+	<a href="https://books.apple.com/book/id1609931638">Apple Books store</a>,
+	<i>$4.99</i>.
+</li>
+<li>
+	<a href="https://play.google.com/store/books/details?id=A81wEAAAQBAJ">Google Play store</a>,
+	<i>$4.99</i>.
+</li>
+</ul>
+	{{ end -}}
+
+	{{- if $is_generics }}
+The digital versions of this book are available at the following places:
+<ul>
+<li>
+	<a href="https://leanpub.com/go-generics-101">Leanpub store</a>,
+	<i>$7.99+</i> ($7.99 is the minimum book price at Leanpub. It is more cost-effective to buy this book from <a href="https://leanpub.com/b/go-optimizations-details">this</a> or <a href="https://leanpub.com/b/go-optimizations-details-generics#bundle-page-go-details-and-tips-101">this</a> book bundle).
+</li>
+<li>
+	<a href="https://www.amazon.com/dp/B09XBQNNF2">Amazon Kindle store</a>,
+	<i>$5.99</i>.
+</li>
+<li>
+	<a href="https://books.apple.com/book/id1618059315">Apple Books store</a>,
+	<i>$5.99</i>.
+</li>
+<li>
+	<a href="https://play.google.com/store/books/details?id=D81wEAAAQBAJ">Google Play store</a>,
+	<i>$5.99</i>.
+</li>
+</ul>
+	{{ end -}}
+
+</div>
+{{ end -}}
+
+
+{{- if false }}
+
+<div>
+If you would like to, you can support the book and the website by
+making a donation through Paypal (<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PJWNSMCJ8XLX8&source=url">$5</a>, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EK54M5NSXVFLL&source=url">$9</a>, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z7NNPZN28Z6FL&source=url">$15</a>, or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3VLHQW5VAVCUY&source=url">$25</a>) or buying Tapir a coffee (<a href="https://ko-fi.com/go_101" target="_blank">way 1</a> and <a href="https://www.buymeacoffee.com/go101" target="_blank">way 2</a>).
+</div>
+
+{{ end -}}
+
+
+{{- if false }}
+<div class="text-center" style="padding: 6px; font-size: small;">
+(Paypal donation QR code)<br/>
+<img src="res/paypal-donate-qr-code-5.png" alt="paypal donate QR code"></img>
+</div>
+
+<p></p>
+{{ end -}}
+
+<div>
+
+Tapir, the author of Go 101, has been on writing the Go 101 series books
+and maintaining the go101.org website since 2016 July.
+New contents will be continually added to the book and the website from time to time.
+Tapir is also an indie game developer.
+You can also support Go 101 by playing <a href="https://www.tapirgames.com">Tapir's games</a>
+(made for both Android and iPhone/iPad):
+<ul>
+<li>
+	<a href="https://www.tapirgames.com/App/Color-Infection">Color Infection</a> (★★★★★), a physics based original casual puzzle game. 140+ levels. 
+</li>
+<li>
+	<a href="https://www.tapirgames.com/App/Rectangle-Pushers">Rectangle Pushers</a> (★★★★★), an original casual puzzle game. Two modes, 104+ levels. 
+</li>
+<li>
+	<a href="https://www.tapirgames.com/App/Let-Us-Play-With-Particles">Let's Play With Particles</a>, a casual action original game. Three mini games are included.
+</li>
+</ul>
+</div>
+
+Individual donations <a href="https://paypal.me/tapirliu">via PayPal</a> are also welcome.
+{{- if false }}
+Individual donations <a href="https://paypal.me/tapirliu">via PayPal</a>
+and cryptocurrencies are welcome too:
+<div style="padding-left:30px">
+<i>Bitcoin</i>: 1xucQbv5jujFPPwhyg395ri5yV71hx9g9<br/>
+<i>Ethereum</i>: 0x5dc4aa2c2bbfaadae373dadcfca11b3358912212
+</div>
+{{ end -}}
+
+</small></div>
+
+{{ if and $not_index_page .Index -}}
+
+<hr>
+Index:
+{{ .Index }}
+
+{{ end }}
+
+
+{{ end }}
+
+
