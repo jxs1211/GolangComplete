@@ -15,9 +15,7 @@ type StraightPipeline struct {
 }
 
 // Process is to process the coming data by the pipeline
-func (f *StraightPipeline) Process(data Request) (Response, error) {
-	var ret interface{}
-	var err error
+func (f *StraightPipeline) Process(data Request) (ret Response, err error) {
 	for _, filter := range *f.Filters {
 		ret, err = filter.Process(data)
 		if err != nil {
