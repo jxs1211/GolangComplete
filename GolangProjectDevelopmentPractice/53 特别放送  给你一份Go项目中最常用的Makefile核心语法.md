@@ -75,7 +75,7 @@ clean:
 
 第三步，执行 make，产生可执行文件。
 
-```shell
+```sh
 $ make
 gcc -c hello.c
 gcc -o hello hello.o

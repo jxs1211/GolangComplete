@@ -4,7 +4,6 @@ import (
 	"log"
 	"math/rand"
 	"os"
-	"runtime"
 	"runtime/pprof"
 	"time"
 )
@@ -47,7 +46,8 @@ func main() {
 	defer pprof.StopCPUProfile()
 
 	// 主逻辑区，进行一些简单的代码运算
-	x := [row][col]int{}
+	x := [row][col]int{} // fatal error: stack overflow
+	// fmt.Println(x)
 	fillMatrix(&x)
 	calculate(&x)
 
@@ -55,7 +55,7 @@ func main() {
 	if err != nil {
 		log.Fatal("could not create memory profile: ", err)
 	}
-	runtime.GC()                                       // GC，获取最新的数据信息
+	// runtime.GC()                                      // GC，获取最新的数据信息
 	if err := pprof.WriteHeapProfile(f1); err != nil { // 写入内存信息
 		log.Fatal("could not write memory profile: ", err)
 	}

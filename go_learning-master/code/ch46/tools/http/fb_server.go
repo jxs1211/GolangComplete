@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	_ "net/http/pprof"
+	"test/b"
+	"test/pkg/a"
 )
 
 func GetFibonacciSerie(n int) []int {
@@ -33,5 +35,7 @@ func createFBS(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/fb", createFBS)
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	a.APrintln("start...")
+	b.BPrintln("bstart...")
+	log.Fatal(http.ListenAndServe(":8088", nil))
 }
