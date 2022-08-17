@@ -41,7 +41,7 @@ func (s *sdkHttpServer) Start(address string) error {
 	return http.ListenAndServe(address, s)
 }
 
-func (s *sdkHttpServer) ServeHTTP(writer http.ResponseWriter, request *http.Request)  {
+func (s *sdkHttpServer) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	c := s.ctxPool.Get().(*Context)
 	defer func() {
 		s.ctxPool.Put(c)
@@ -69,13 +69,13 @@ func NewSdkHttpServer(name string, builders ...FilterBuilder) Server {
 	// 从后往前把filter串起来
 	for i := len(builders) - 1; i >= 0; i-- {
 		b := builders[i]
-		root = b(root)
+		root = b(root) // wrap handle func layer by layer
 	}
 	res := &sdkHttpServer{
-		Name: name,
+		Name:    name,
 		handler: handler,
-		root: root,
-		ctxPool: sync.Pool{New: func() interface {}{
+		root:    root,
+		ctxPool: sync.Pool{New: func() interface{} {
 			return newContext()
 		}},
 	}
@@ -83,7 +83,7 @@ func NewSdkHttpServer(name string, builders ...FilterBuilder) Server {
 }
 
 func NewSdkHttpServerWithFilterNames(name string,
-	filterNames...string) Server {
+	filterNames ...string) Server {
 	// 这里取出来
 	builders := make([]FilterBuilder, 0, len(filterNames))
 	for _, n := range filterNames {
@@ -93,4 +93,3 @@ func NewSdkHttpServerWithFilterNames(name string,
 
 	return NewSdkHttpServer(name, builders...)
 }
-

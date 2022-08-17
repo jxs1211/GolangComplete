@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"reflect"
 	"sync"
 )
@@ -17,6 +18,7 @@ type Person struct {
 }
 
 func main() {
+	http.HandleFunc
 	// p := &Person{}
 	var p Person
 	// if p != nil {
