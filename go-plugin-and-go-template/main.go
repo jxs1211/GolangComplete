@@ -1,10 +1,14 @@
 package main
 
-import "plugin"
+import (
+	_ "embed"
+	"plugin"
+)
 
 //go:generate go run ./template/gen_embed_var.go
+
 func main() {
-	p, err := plugin.Open("./plugin/plugin.so")
+	p, err := plugin.Open("plugin.so")
 	if err != nil {
 		panic(err)
 	}

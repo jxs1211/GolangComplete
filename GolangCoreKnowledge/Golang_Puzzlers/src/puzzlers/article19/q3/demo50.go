@@ -68,6 +68,7 @@ func main() {
 	// }
 }
 
-func showHttpURL() {
-	r := http.Request
+func showHttpURL(w http.ResponseWriter, r *http.Request) {
+	// r.URL
+	r.URL.Query()
 }

@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Aug 12 21:18:00 2022
+# Make data base, printed on Wed Aug 24 20:37:50 2022
 
 # Variables
 
@@ -19,7 +19,7 @@ SCM_CHECK = true
 # automatic
 ?F = $(notdir $?)
 # environment
-WSLENV = VSCODE_WSL_EXT_LOCATION/up:VSCODE_SERVER_TAR/up
+WSLENV = VSCODE_WSL_EXT_LOCATION/up
 # default
 .SHELLFLAGS := -c
 # automatic
@@ -37,7 +37,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # environment
-_ = /home/going/.vscode-server/bin/da76f93349a72022ca4670c1b84860304616aaa2/node
+_ = /home/going/.vscode-server/bin/6d9b74a70ca9c7733b29f0456fd8195364076dda/node
 # environment
 GOVERSION = go1.18.3
 # environment
@@ -61,7 +61,7 @@ BASH_IT_THEME = bobby
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/going/go/go1.18.3/bin:/home/going/.vscode-server/bin/da76f93349a72022ca4670c1b84860304616aaa2/bin/remote-cli:/home/going/workspace/golang/bin:/home/going/bin:/home/going/.pyenv/shims:/home/going/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/VMware/VMware Player/bin/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/PuTTY/:/mnt/d/softwares/nodejs/:/mnt/d/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Amazon/AWSCLI/bin/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/d/Program Files/Kubernetes/Minikube:/mnt/c/Program Files/Go/bin:/mnt/d/Program Files (x86)/NetSarang/Xshell 7/:/mnt/d/Program/Python/Python36/:/mnt/c/Users/xjshen/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2020.2.3/bin:/mnt/c/Python27:/mnt/d/work/src/python/venv/python3-default/Scripts:/mnt/d/softwares/mysql-shell-8.0.22-windows-x86-64bit/bin:/mnt/c/Python27/Scripts:/mnt/c/Program Files/JetBrains/GoLand 2020.2.3/bin:/mnt/c/Program Files/Java/jdk-15.0.1/bin/java.exe:/mnt/d/softwares:/mnt/c/Users/xjshen/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/xjshen/AppData/Roaming/npm:/mnt/d/Program Files/Go/bin:/mnt/d/Program Files/Go":/mnt/c/Users/xjshen/go/bin:/snap/bin
+PATH = /home/going/go/go1.18.3/bin:/home/going/.vscode-server/bin/6d9b74a70ca9c7733b29f0456fd8195364076dda/bin/remote-cli:/home/going/workspace/golang/bin:/home/going/bin:/home/going/.pyenv/shims:/home/going/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/VMware/VMware Player/bin/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/PuTTY/:/mnt/d/softwares/nodejs/:/mnt/d/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Amazon/AWSCLI/bin/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/d/Program Files/Kubernetes/Minikube:/mnt/c/Program Files/Go/bin:/mnt/d/Program Files (x86)/NetSarang/Xshell 7/:/mnt/d/Program/Python/Python36/:/mnt/c/Users/xjshen/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2020.2.3/bin:/mnt/c/Python27:/mnt/d/work/src/python/venv/python3-default/Scripts:/mnt/d/softwares/mysql-shell-8.0.22-windows-x86-64bit/bin:/mnt/c/Python27/Scripts:/mnt/c/Program Files/JetBrains/GoLand 2020.2.3/bin:/mnt/c/Program Files/Java/jdk-15.0.1/bin/java.exe:/mnt/d/softwares:/mnt/c/Users/xjshen/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/xjshen/AppData/Roaming/npm:/mnt/d/Program Files/Go/bin:/mnt/d/Program Files/Go":/mnt/c/Users/xjshen/go/bin:/snap/bin
 # environment
 IRC_CLIENT = irssi
 # environment
@@ -72,8 +72,6 @@ GOPATH = /home/going/workspace/golang
 ELECTRON_RUN_AS_NODE = 1
 # environment
 PYENV_ROOT = /home/going/.pyenv
-# environment
-VSCODE_SERVER_TAR = /mnt/c/Users/xjshen/AppData/Local/Temp/vscode-remote-wsl/da76f93349a72022ca4670c1b84860304616aaa2/vscode-server-stable-linux-x64.tar.gz
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # automatic
@@ -87,9 +85,9 @@ PWD = /mnt/d/work/src/go/GolangComplete
 # environment
 DOCKERHUB_USERNAME = jxs1211
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-d4cfe2ad-b55e-4781-ab96-f3864bd2b833.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-2fae7af3-b96c-4388-9062-30a68b9c116b.sock
 # environment
-WSL_INTEROP = /run/WSL/13882_interop
+WSL_INTEROP = /run/WSL/20_interop
 # environment
 GOMODCACHE = /home/going/workspace/golang/pkg/mod
 # environment
@@ -183,7 +181,7 @@ TERM = xterm-256color
 # environment
 WSL_DISTRO_NAME = Ubuntu-18.04
 # variable set hash-table stats:
-# Load=85/1024=8%, Rehash=0, Collisions=5/107=5%
+# Load=84/1024=8%, Rehash=0, Collisions=5/106=5%
 
 # Pattern-specific Variable Values
 
@@ -191,9 +189,9 @@ WSL_DISTRO_NAME = Ubuntu-18.04
 
 # Directories
 
-# . (device 47, inode 2814749767308733): 24 files, no impossibilities.
+# . (device 69, inode 2814749767308733): 25 files, no impossibilities.
 
-# 24 files, no impossibilities in 1 directories.
+# 25 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -243,12 +241,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 32 / storage = 449 B / avg = 14 B
-# current buf: size = 8162 B / used = 449 B / count = 32 / avg = 14 B
+# strcache buffers: 1 (0) / strings = 33 / storage = 464 B / avg = 14 B
+# current buf: size = 8162 B / used = 464 B / count = 33 / avg = 14 B
 
-# strcache performance: lookups = 35 / hit rate = 8%
+# strcache performance: lookups = 36 / hit rate = 8%
 # hash-table stats:
-# Load=32/8192=0%, Rehash=0, Collisions=1/35=3%
-# Finished Make data base on Fri Aug 12 21:18:00 2022
+# Load=33/8192=0%, Rehash=0, Collisions=1/36=3%
+# Finished Make data base on Wed Aug 24 20:37:50 2022
 
  
