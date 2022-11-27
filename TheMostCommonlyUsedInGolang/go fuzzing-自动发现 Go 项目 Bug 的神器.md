@@ -1,6 +1,5 @@
 # 自动发现 Go 项目 Bug 的神器
 
-[Go招聘](javascript:void(0);) *2022-05-24 11:50* *Posted on 北京*
 
 Go1.18 新特性中有一个神器：Fuzzing，对于发现 Go 项目中的 Bug 很有帮助。本文通过一个具体的例子来介绍它的基本使用，希望你能掌握并应用。
 
@@ -488,7 +487,7 @@ ok      golang-unit-test-demo/fuzz_test_demo    11.783s
 
 ![Image](https://mmbiz.qpic.cn/mmbiz_png/z4pQ0O5h0f5VoaTYCN25RU1HB6qljlEj7kPwuTe6b4ldAicwIXUwTfDOw1v6jwVbzpDgAJTqna6bSn4P2z0q6nQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
 
-模糊测试的结构，来自：https://go.dev/doc/fuzz/
+
 
 这张图里能看出来这几点：
 
@@ -499,4 +498,5 @@ ok      golang-unit-test-demo/fuzz_test_demo    11.783s
 - Seed corpus：语料，这个单词儿我也没见过，大家记住就是提供了它后，生产的随机参数都跟这个语料有相关性，不是瞎随机的，且用 f.Add 设置的语料个数，要跟模糊参数的个数、顺序、类型上保持一致。
 
 更详细的解释，请参考官方文档：https://go.dev/doc/fuzz/
-
+模糊测试的结构，来自：https://go.dev/doc/fuzz/
+https://www.youtube.com/watch?v=7KWPiRq3ZYI
